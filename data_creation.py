@@ -23,6 +23,27 @@ def generate_rub_exchange_rate_data(start_date, end_date, anomaly_rate=0.05, tre
     data = {'Date': dates, 'Rub_Exchange_Rate': rub_exchange_rate}
     return pd.DataFrame(data)
 
+
+def generate_uan_exchange_rate_data(start_date, end_date, anomaly_rate=0.05, trend_factor=0.02, noise_factor=0.1):
+    dates = pd.date_range(start=start_date, end=end_date, freq='D')
+    time = np.arange(len(dates))
+    
+    # Тренд
+    trend = trend_factor * time
+
+    # Аномалии
+    anomalies = np.random.choice(len(dates), int(anomaly_rate * len(dates)), replace=False)
+    trend[anomalies] += np.random.normal(scale=noise_factor * 5, size=len(anomalies))
+
+    # Шум
+    noise = np.random.normal(scale=noise_factor, size=len(dates))
+
+    # Курс
+    rub_exchange_rate = 27 + trend + noise
+    
+    data = {'Date': dates, 'Rub_Exchange_Rate': rub_exchange_rate}
+    return pd.DataFrame(data)
+
 # Метод для сохраниня данных в файл csv
 def save_data(data, folder, filename):
 
@@ -44,10 +65,20 @@ if __name__ == "__main__":
 
     # Генерация данных курса рубля
     all_rub_exchange_rate_data = generate_rub_exchange_rate_data(start_date, end_date, trend_factor=0.02, noise_factor=0.2)
+    # Генерация данных курса доллара
+
+    start_date = '2024-01-01' 
+    end_date = '2024-12-31' 
+    all_uan_exchange_rate_data = generate_uan_exchange_rate_data(start_date, end_date, trend_factor=0.03, noise_factor=0.1)
 
     # Разделение данных на train и test в соотношении 80/20
     train_rub_exchange_data, test_rub_exchange_data = train_test_split(all_rub_exchange_rate_data, test_size=0.2, random_state=42)
+    train_uan_exchange_data, test_uan_exchange_data = train_test_split(all_rub_exchange_rate_data, test_size=0.2, random_state=42)
 
     # Сохранение данных
     save_data(train_rub_exchange_data, 'train', 'train_rub_exchange_rate_data.csv')
     save_data(test_rub_exchange_data, 'test', 'test_rub_exchange_rate_data.csv')
+
+    # Сохранение данных
+    save_data(train_uan_exchange_data, 'train', 'train_uan_exchange_rate_data.csv')
+    save_data(test_uan_exchange_data, 'test', 'test_uan_exchange_rate_data.csv')
