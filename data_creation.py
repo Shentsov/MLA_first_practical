@@ -44,6 +44,27 @@ def generate_uan_exchange_rate_data(start_date, end_date, anomaly_rate=0.05, tre
     data = {'Date': dates, 'Rub_Exchange_Rate': rub_exchange_rate}
     return pd.DataFrame(data)
 
+
+def generate_bhat_exchange_rate_data(start_date, end_date, anomaly_rate=0.05, trend_factor=0.02, noise_factor=0.1):
+    dates = pd.date_range(start=start_date, end=end_date, freq='D')
+    time = np.arange(len(dates))
+
+    # Тренд
+    trend = trend_factor * time
+
+    # Аномалии
+    anomalies = np.random.choice(len(dates), int(anomaly_rate * len(dates)), replace=False)
+    trend[anomalies] += np.random.normal(scale=noise_factor * 5, size=len(anomalies))
+
+    # Шум
+    noise = np.random.normal(scale=noise_factor, size=len(dates))
+
+    # Курс
+    bhat_exchange_rate = 36 + trend + noise
+
+    data = {'Date': dates, 'Bhat_Exchange_Rate': bhat_exchange_rate}
+    return pd.DataFrame(data)
+
 # Метод для сохраниня данных в файл csv
 def save_data(data, folder, filename):
 
