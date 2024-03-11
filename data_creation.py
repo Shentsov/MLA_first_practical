@@ -92,9 +92,15 @@ if __name__ == "__main__":
     end_date = '2024-12-31' 
     all_uan_exchange_rate_data = generate_uan_exchange_rate_data(start_date, end_date, trend_factor=0.03, noise_factor=0.1)
 
+    # Генерация данных курса Тайских-бат
+    start_date = '2020-01-01'
+    end_date = '2024-12-31'
+    all_bhat_exchange_rate_data = generate_bhat_exchange_rate_data(start_date, end_date, trend_factor=0.02, noise_factor=0.1)
+
     # Разделение данных на train и test в соотношении 80/20
     train_rub_exchange_data, test_rub_exchange_data = train_test_split(all_rub_exchange_rate_data, test_size=0.2, random_state=42)
     train_uan_exchange_data, test_uan_exchange_data = train_test_split(all_rub_exchange_rate_data, test_size=0.2, random_state=42)
+    train_bhat_exchange_data, test_bhat_exchange_data = train_test_split(all_bhat_exchange_rate_data, test_size=0.2, random_state=42)
 
     # Сохранение данных
     save_data(train_rub_exchange_data, 'train', 'train_rub_exchange_rate_data.csv')
@@ -103,3 +109,7 @@ if __name__ == "__main__":
     # Сохранение данных
     save_data(train_uan_exchange_data, 'train', 'train_uan_exchange_rate_data.csv')
     save_data(test_uan_exchange_data, 'test', 'test_uan_exchange_rate_data.csv')
+
+    # Сохранение данных
+    save_data(train_bhat_exchange_data, 'train', 'train_bhat_exchange_rate_data.csv')
+    save_data(test_bhat_exchange_data, 'test', 'test_bhat_exchange_rate_data.csv')
