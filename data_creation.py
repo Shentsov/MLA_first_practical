@@ -20,11 +20,11 @@ def generate_rub_exchange_rate_data(start_date, end_date, anomaly_rate=0.05, tre
     # Курс
     rub_exchange_rate = 70 + trend + noise
     
-    data = {'Date': dates, 'Rub_Exchange_Rate': rub_exchange_rate}
+    data = {'Date': dates, 'Exchange_Rate': rub_exchange_rate}
     return pd.DataFrame(data)
 
 
-def generate_uan_exchange_rate_data(start_date, end_date, anomaly_rate=0.05, trend_factor=0.02, noise_factor=0.1):
+def generate_cny_exchange_rate_data(start_date, end_date, anomaly_rate=0.05, trend_factor=0.02, noise_factor=0.1):
     dates = pd.date_range(start=start_date, end=end_date, freq='D')
     time = np.arange(len(dates))
     
@@ -39,9 +39,9 @@ def generate_uan_exchange_rate_data(start_date, end_date, anomaly_rate=0.05, tre
     noise = np.random.normal(scale=noise_factor, size=len(dates))
 
     # Курс
-    rub_exchange_rate = 27 + trend + noise
+    cny_exchange_rate = 7 + trend + noise
     
-    data = {'Date': dates, 'Rub_Exchange_Rate': rub_exchange_rate}
+    data = {'Date': dates, 'Exchange_Rate': cny_exchange_rate}
     return pd.DataFrame(data)
 
 
@@ -62,7 +62,7 @@ def generate_bhat_exchange_rate_data(start_date, end_date, anomaly_rate=0.05, tr
     # Курс
     bhat_exchange_rate = 36 + trend + noise
 
-    data = {'Date': dates, 'Bhat_Exchange_Rate': bhat_exchange_rate}
+    data = {'Date': dates, 'Exchange_Rate': bhat_exchange_rate}
     return pd.DataFrame(data)
 
 # Метод для сохраниня данных в файл csv
@@ -90,7 +90,7 @@ if __name__ == "__main__":
 
     start_date = '2024-01-01' 
     end_date = '2024-12-31' 
-    all_uan_exchange_rate_data = generate_uan_exchange_rate_data(start_date, end_date, trend_factor=0.03, noise_factor=0.1)
+    all_cny_exchange_rate_data = generate_cny_exchange_rate_data(start_date, end_date, trend_factor=0.03, noise_factor=0.1)
 
     # Генерация данных курса Тайских-бат
     start_date = '2020-01-01'
@@ -99,7 +99,7 @@ if __name__ == "__main__":
 
     # Разделение данных на train и test в соотношении 80/20
     train_rub_exchange_data, test_rub_exchange_data = train_test_split(all_rub_exchange_rate_data, test_size=0.2, random_state=42)
-    train_uan_exchange_data, test_uan_exchange_data = train_test_split(all_rub_exchange_rate_data, test_size=0.2, random_state=42)
+    train_cny_exchange_data, test_cny_exchange_data = train_test_split(all_cny_exchange_rate_data, test_size=0.2, random_state=42)
     train_bhat_exchange_data, test_bhat_exchange_data = train_test_split(all_bhat_exchange_rate_data, test_size=0.2, random_state=42)
 
     # Сохранение данных
@@ -107,8 +107,8 @@ if __name__ == "__main__":
     save_data(test_rub_exchange_data, 'test', 'test_rub_exchange_rate_data.csv')
 
     # Сохранение данных
-    save_data(train_uan_exchange_data, 'train', 'train_uan_exchange_rate_data.csv')
-    save_data(test_uan_exchange_data, 'test', 'test_uan_exchange_rate_data.csv')
+    save_data(train_cny_exchange_data, 'train', 'train_cny_exchange_rate_data.csv')
+    save_data(test_cny_exchange_data, 'test', 'test_cny_exchange_rate_data.csv')
 
     # Сохранение данных
     save_data(train_bhat_exchange_data, 'train', 'train_bhat_exchange_rate_data.csv')
