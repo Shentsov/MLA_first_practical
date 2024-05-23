@@ -1,7 +1,8 @@
-from sklearn.linear_model import LinearRegression
 import pandas as pd
 import os
 import pickle
+from sklearn.model_selection import GridSearchCV, cross_val_score
+from sklearn.ensemble import RandomForestRegressor
 
 def load_data(filename):
     # Загрузка данных из указанного файла
@@ -11,10 +12,14 @@ def load_data(filename):
     return X, y
 
 def train_model(X, y):
-    # Обучение простой линейной регрессионной модели
-    model = LinearRegression()
-    model.fit(X, y)
-    return model
+    param_grid = {
+        'n_estimators': [50, 100, 200],
+        'max_depth': [None, 10, 20, 30]
+    }
+    model = RandomForestRegressor()
+    grid_search = GridSearchCV(model, param_grid, cv=5)
+    grid_search.fit(X, y)
+    return grid_search.best_estimator_
 
 def main():
     
